@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Rodar questão 1",
+      "request": "launch",
+      "mainClass": "Main",
+      "classPaths": ["${workspaceFolder}/questao1/out"],
+      "cwd": "${workspaceFolder}/questao1/src",
+      "preLaunchTask": "Java: compilar questão 1"
+    },
+    {
+      "type": "java",
+      "name": "Rodar questão 2",
+      "request": "launch",
+      "mainClass": "Main",
+      "classPaths": ["${workspaceFolder}/questao2/out"],
+      "cwd": "${workspaceFolder}/questao2/src",
+      "preLaunchTask": "Java: compilar questão 2"
+    }
+  ]
+}

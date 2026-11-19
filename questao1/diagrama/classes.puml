@@ -1,0 +1,67 @@
+@startuml
+title Questão 1 — Provisionamento multinuvem
+skinparam classAttributeIconSize 0
+
+class Main <<cliente / seleção do provedor>>
+class ProvisioningService <<Abstract Factory client>> {
+  - factory: CloudFactory
+  + provision(nome, quantidadeVM, GB): void
+}
+interface CloudFactory <<Abstract Factory>> {
+  + createVirtualMachine(): VirtualMachine
+  + createStorage(GB): Storage
+  + createMessageQueue(): MessageQueue
+}
+class AwsFactory <<Concrete Factory>>
+class AzureFactory <<Concrete Factory>>
+interface VirtualMachine <<Abstract Product>>
+interface Storage <<Abstract Product>>
+interface MessageQueue <<Abstract Product>>
+class AwsVirtualMachine <<Concrete Product>>
+class AwsStorage <<Concrete Product>>
+class AwsMessageQueue <<Concrete Product>>
+class AzureVirtualMachine <<Concrete Product>>
+class AzureStorage <<Concrete Product>>
+class AzureMessageQueue <<Concrete Product>>
+class Environment <<produto composto>>
+class Configuration <<Singleton>> {
+  - INSTANCE: Configuration
+  - region: String
+  - monthlyBudget: double
+  + getInstance(): Configuration
+}
+class AuditLog <<thread-safe Singleton>> {
+  - INSTANCE: AuditLog
+  - records: List<AuditRecord>
+  + getInstance(): AuditLog
+  + addRecord(record): void
+  + printHistory(): void
+}
+class AuditRecord
+
+Main ..> AwsFactory
+Main ..> AzureFactory
+Main ..> ProvisioningService
+ProvisioningService --> CloudFactory
+CloudFactory <|.. AwsFactory
+CloudFactory <|.. AzureFactory
+VirtualMachine <|.. AwsVirtualMachine
+Storage <|.. AwsStorage
+MessageQueue <|.. AwsMessageQueue
+VirtualMachine <|.. AzureVirtualMachine
+Storage <|.. AzureStorage
+MessageQueue <|.. AzureMessageQueue
+AwsFactory ..> AwsVirtualMachine : creates
+AwsFactory ..> AwsStorage : creates
+AwsFactory ..> AwsMessageQueue : creates
+AzureFactory ..> AzureVirtualMachine : creates
+AzureFactory ..> AzureStorage : creates
+AzureFactory ..> AzureMessageQueue : creates
+ProvisioningService ..> Configuration
+ProvisioningService ..> AuditLog
+ProvisioningService ..> Environment : creates
+Environment o-- "0..*" VirtualMachine
+Environment o-- Storage
+Environment o-- MessageQueue
+AuditLog o-- "0..*" AuditRecord
+@enduml

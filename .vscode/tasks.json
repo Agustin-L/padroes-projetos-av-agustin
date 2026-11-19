@@ -1,0 +1,19 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Java: compilar questão 1",
+      "type": "shell",
+      "command": "$sources = Get-ChildItem '${workspaceFolder}\\questao1\\src\\*.java' | ForEach-Object FullName; $compiler = (Get-Command javac -All | Where-Object { $_.Source -notmatch '\\\\Oracle\\\\Java\\\\javapath\\\\' } | Select-Object -First 1).Source; if (-not $compiler) { throw 'JDK compiler not found. Install JDK 21 or newer.' }; & $compiler -encoding UTF-8 -d '${workspaceFolder}\\questao1\\out' $sources; exit $LASTEXITCODE",
+      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "problemMatcher": "$javac"
+    },
+    {
+      "label": "Java: compilar questão 2",
+      "type": "shell",
+      "command": "$sources = Get-ChildItem '${workspaceFolder}\\questao2\\src\\*.java' | ForEach-Object FullName; $compiler = (Get-Command javac -All | Where-Object { $_.Source -notmatch '\\\\Oracle\\\\Java\\\\javapath\\\\' } | Select-Object -First 1).Source; if (-not $compiler) { throw 'JDK compiler not found. Install JDK 21 or newer.' }; & $compiler -encoding UTF-8 -d '${workspaceFolder}\\questao2\\out' $sources; exit $LASTEXITCODE",
+      "options": { "shell": { "executable": "powershell.exe", "args": ["-NoProfile", "-Command"] } },
+      "problemMatcher": "$javac"
+    }
+  ]
+}
