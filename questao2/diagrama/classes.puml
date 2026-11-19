@@ -1,0 +1,62 @@
+@startuml
+title Questão 2 — Casa de leilões online
+skinparam classAttributeIconSize 0
+
+class Main <<cliente>>
+class Lot <<Subject>> {
+  - observers: List<AuctionObserver>
+  - commissionStrategy: CommissionStrategy
+  + addObserver(observer): void
+  + removeObserver(observer): void
+  + placeBid(bidder, value): boolean
+  + closeAuction(): void
+  + changeCommissionStrategy(strategy): void
+  + calculateCommission(): double
+}
+interface AuctionObserver <<Observer>> { + update(lot, bid): void }
+class Bidder <<Concrete Observer>>
+class AuctioneerPanel <<Concrete Observer>>
+class Auditor <<Concrete Observer>>
+class Bid
+interface CommissionStrategy <<Strategy>> { + calculate(saleValue): double }
+class ArtCommission <<Concrete Strategy>>
+class VehicleCommission <<Concrete Strategy>>
+class PropertyCommission <<Concrete Strategy>>
+class ElectronicsCommission <<Concrete Strategy>>
+interface Sale <<Component>> {
+  + getSalePrice(): double
+  + getTotalPrice(): double
+  + getDescriptions(): List<String>
+}
+class BasicSale <<Concrete Component>>
+abstract class SaleDecorator <<Decorator>>
+class InsuranceDecorator <<Concrete Decorator>>
+class CertificateDecorator <<Concrete Decorator>>
+class PackagingDecorator <<Concrete Decorator>>
+class ExpressDeliveryDecorator <<Concrete Decorator>>
+class Invoice
+class SellerSettlement
+
+AuctionObserver <|.. Bidder
+AuctionObserver <|.. AuctioneerPanel
+AuctionObserver <|.. Auditor
+Lot o-- "0..*" AuctionObserver : notifies
+Lot o-- "0..*" Bid
+Lot --> CommissionStrategy : delegates commission
+CommissionStrategy <|.. ArtCommission
+CommissionStrategy <|.. VehicleCommission
+CommissionStrategy <|.. PropertyCommission
+CommissionStrategy <|.. ElectronicsCommission
+Sale <|.. BasicSale
+Sale <|.. SaleDecorator
+SaleDecorator o--> Sale : wraps
+SaleDecorator <|-- InsuranceDecorator
+SaleDecorator <|-- CertificateDecorator
+SaleDecorator <|-- PackagingDecorator
+SaleDecorator <|-- ExpressDeliveryDecorator
+Invoice ..> Sale
+SellerSettlement ..> Lot
+Main ..> Lot
+Main ..> Invoice
+Main ..> SellerSettlement
+@enduml
